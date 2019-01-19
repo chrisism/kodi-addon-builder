@@ -1,0 +1,40 @@
+{
+  "name": "kodi-addon-builder",
+  "version": "1.0.0",
+  "description": "Scripts to build and publish Kodi Python addons and skins",
+  "scripts": {
+    "build": "addon build && addon package",
+    "build-patch": "addon versioning --semver patch && build",
+    "build-minor": "addon versioning --semver minor && build",
+    "build-major": "addon versioning --semver major && build",
+    "build-install": "build && addon install",
+    "build-install-patch": "build-patch && addon install",
+    "build-install-minor": "build-minor && addon install",
+    "build-install-marjor": "build-major && addon install"
+  },
+  "bin": {
+    "addon": "bin/cli.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/chrisism/kodi-addon-builder"
+  },
+  "keywords": [
+    "kodi",
+    "addon"
+  ],
+  "author": "chrisism",
+  "license": "MIT",
+  "devDependencies": {},
+  "dependencies": {
+    "archiver": "^3.0.0",
+    "bump-regex": "^4.0.0",
+    "find-up": "^3.0.0",
+    "fs-extra": "^7.0.1",
+    "globby": "^9.0.0",
+    "request": "^2.88.0",
+    "semver": "^5.6.0",
+    "xmldom": "^0.1.27",
+    "yargs": "^12.0.5"
+  }
+}
