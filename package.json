@@ -1,6 +1,6 @@
 {
   "name": "kodi-addon-builder",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Scripts to build and publish Kodi Python addons and skins",
   "scripts": {
     "build": "addon build && addon package",
@@ -21,9 +21,19 @@
   },
   "keywords": [
     "kodi",
-    "addon"
+    "xbmc",
+    "addon",
+    "skin"
   ],
-  "author": "chrisism",
+  "author": {
+    "name": "Christian Jungerius",
+    "email": "cwjungerius@gmail.com",
+    "url": "https://github.com/chrisism"
+  },
+  "bugs": {
+    "url": "https://github.com/chrisism/kodi-addon-builder/issues"
+  },
+  "homepage": "https://github.com/chrisism/kodi-addon-builder/",
   "license": "MIT",
   "devDependencies": {},
   "dependencies": {
@@ -34,6 +44,7 @@
     "globby": "^9.0.0",
     "request": "^2.88.0",
     "semver": "^5.6.0",
+    "shelljs": "^0.8.3",
     "xmldom": "^0.1.27",
     "yargs": "^12.0.5"
   }

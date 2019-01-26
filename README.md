@@ -28,12 +28,19 @@ Important: All paths to directories should end with a trailing slash.
 ```bash
 addon build --packagename plugin.myplugin
 ```
-Will copy all needed files from the source directory to the dist folder.
+Will copy all needed files from the source directory to the dist folder. Afterwards will perform texturepacking actions
+for all configured folders.
 
 Options:
 * packagename: Name of the package
 * src: Source folder to copy files from
+* srcpaths: Paths/patterns to get files from source folder. [Globby](https://github.com/sindresorhus/globby#readme) patterns are applied.
 * dist: Destination folder for all distribution files
+* texturefolders: Paths to directories within dist folder to create texture files out of. 
+
+#### TexturePacker
+Info about texture packer on [kodi wiki](https://kodi.wiki/view/TexturePacker) and source used in this script on [Github](https://github.com/nottinghamcollege/kodi-texturepacker/). 
+The supplied folders will be moved into a texture file (.xbt) with the same name as its parent directory. Note that the contents of the texturefolders will be removed afterwards, only leaving the xbt file behind. Texturefolders field must contain paths relative to the path provided in the dist option.
 
 ### Package
 ```bash
@@ -66,7 +73,16 @@ Example of config file:
 {
     "packagename": "plugin.myplugin",
     "src": "./src/",
+    "srcpaths": [
+        "**/*.*",
+        "!test***/*.*",
+        "!package.json",
+        "!**/*.pyc"
+    ],
     "dist": "./dist/",
+    "texturepaths": [
+        "plugin.myplugin/media/icons/"
+    ],
     "repositoryfolder": "./dist/",
     "semver": "patch",
     "addonsfolder": "%AppData%\\Roaming\\Kodi\\addons\\",
@@ -76,3 +92,7 @@ Example of config file:
     "password": "kodi"
 }
 ```
+
+## Questions or issues
+Use the github issues page for this project or follow the thread on the [Kodi forum](https://forum.kodi.tv/showthread.php?tid=339544).  
+[Changelog](https://raw.githubusercontent.com/chrisism/kodi-addon-builder/master/changelog.txt)

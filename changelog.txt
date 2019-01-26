@@ -1,0 +1,6 @@
+v1.1.0
+- Added Texturepacker feature.
+- Made the globby patterns for src copy action editable.
+
+v1.0.0
+- First release.
