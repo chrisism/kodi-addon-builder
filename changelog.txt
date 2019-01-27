@@ -1,3 +1,6 @@
+v1.1.1
+- Fix for not needed substring action in texture paths
+
 v1.1.0
 - Added Texturepacker feature.
 - Made the globby patterns for src copy action editable.

@@ -22,7 +22,8 @@ Options:
   --help         Show help                                                            [boolean]
 ```
 
-Important: All paths to directories should end with a trailing slash.
+Important: All paths to directories should end with a trailing slash.  
+You can also use the bin command 'addon' through NPM instead of executing the cli.js file.
 
 ### Build
 ```bash
@@ -91,6 +92,22 @@ Example of config file:
     "user": "kodi",
     "password": "kodi"
 }
+```
+
+## NPM Scripts
+Example of scripts block for your own package.json:
+```json
+    "scripts": {
+        "build-only": "addon build",
+        "build": "addon build && addon package",
+        "build-patch": "addon versioning --semver patch && build",
+        "build-minor": "addon versioning --semver minor && build",
+        "build-major": "addon versioning --semver major && build",
+        "build-install": "build && addon install",
+        "build-install-patch": "build-patch && addon install",
+        "build-install-minor": "build-minor && addon install",
+        "build-install-marjor": "build-major && addon install"
+    }
 ```
 
 ## Questions or issues

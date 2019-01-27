@@ -72,7 +72,8 @@ const packageTextures = (config) => {
         try {
             localPath = require.resolve('kodi-addon-builder/package.json');
             localPath = path.dirname(localPath);
-        } catch {}
+        } catch {
+        }
 
         for (var i in config.texturepaths) {
             var texturePath = config.dist + config.texturepaths[i];
@@ -90,7 +91,7 @@ const packageTextures = (config) => {
             else if(os.type() === 'Darwin')
                 osfolder = 'macos';
 
-            var cmdPath = [localPath, 'tools', 'kodi-texturepacker', osfolder].join(path.sep).substr(1) + path.sep;            
+            var cmdPath = [localPath, 'tools', 'kodi-texturepacker', osfolder].join(path.sep) + path.sep;            
             var cmd = cmdPath + 'texturepacker -dupecheck -input ' + texturePath + ' -output ' + outputFile;
             
             if (config.verbose)
