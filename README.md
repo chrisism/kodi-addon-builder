@@ -48,24 +48,24 @@ You can also use the bin command 'addon' through NPM instead of executing the cl
 ## NPM Scripts
 To make it a bit easier, an example of scripts block for your own package.json:
 ```json
- "scripts": {
+  "scripts": {
     "build": "addon build",
-    "build-patch": "addon versioning --semver patch && build",
-    "build-minor": "addon versioning --semver minor && build",
-    "build-major": "addon versioning --semver major && build",
-    "build-pack": "build && addon package",
-    "build-pack-patch": "build-patch && addon package",
-    "build-pack-minor": "build-minor && addon package",
-    "build-pack-major": "build-major && addon package",
-    "build-publish": "build && addon repository",
-    "build-publish-patch": "build-patch && addon repository",
-    "build-publish-minor": "build-minor && addon repository",
-    "build-publish-major": "build-major && addon repository",
-    "build-install": "build && addon install",
-    "build-install-patch": "build-patch && addon install",
-    "build-install-minor": "build-minor && addon install",
-    "build-install-major": "build-major && addon install"
-  },
+    "build-patch": "addon versioning --semver patch && npm run build",
+    "build-minor": "addon versioning --semver minor && npm run build",
+    "build-major": "addon versioning --semver major && npm run build",
+    "build-pack": "npm run build && addon package",
+    "build-pack-patch": "npm run build-patch && addon package",
+    "build-pack-minor": "npm run build-minor && addon package",
+    "build-pack-major": "npm run build-major && addon package",
+    "build-publish": "npm run build && addon repository",
+    "build-publish-patch": "npm run build-patch && addon repository",
+    "build-publish-minor": "npm run build-minor && addon repository",
+    "build-publish-major": "npm run build-major && addon repository",
+    "build-install": "npm run build && addon install",
+    "build-install-patch": "npm run build-patch && addon install",
+    "build-install-minor": "npm run build-minor && addon install",
+    "build-install-major": "npm run build-major && addon install"
+  }
 ```
 
 ## Features

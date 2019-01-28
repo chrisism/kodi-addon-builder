@@ -1,3 +1,6 @@
+v1.2.0
+- Added repository feature
+
 v1.1.1
 - Fix for not needed substring action in texture paths
 
