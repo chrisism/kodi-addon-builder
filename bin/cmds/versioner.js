@@ -76,11 +76,6 @@ const updateVersionInAddonXml = (config) => {
     
     return new Promise((resolve, reject) => {
         
-        if (config.semver === '' || config.semver.length == 0) {
-            resolve();
-            return;
-        }
-
         var addonFilePath = config.src + 'addon.xml';
         var addonFileXml = fs.readFileSync(addonFilePath, 'utf8');
         var doc = new dom().parseFromString(addonFileXml)

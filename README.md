@@ -1,19 +1,39 @@
 # kodi-addon-builder
-Addon build scripts for KODI. With these scripts you can build, package and install your addons for KODI. 
+Addon build scripts for KODI. A collection of usefull tools and scripts so you can easily build, package and install your addons for KODI.
+
+## Main features
+* Build - Create a clean dist folder with only the files needed for distribution.
+* Versioning - Use semver versioning for your addon and package.json.
+* Package - Create versioned zipped packages of your addon so that you can easily distribute and install it.
+* Install - Directly deploy your addon into your local Kodi instance for testing.
+* Repository - Update your addon in your own Kodi repository and update all files and references.
 
 ## Usage
+Start your local addon project by creating a new directory and then setup npm in that folder:
+```bash
+npm init
+```
+
+Install kodi-addon-builder in your project:
+```bash
+npm install kodi-addon-builder --save-dev
+```
+
+After developing your scripts or skins use these node commands:
 ```
 Commands:
   cli.js build       Build the addon
+  cli.js checksum    Generate checksum files (.md5) based on input file.
   cli.js install     Install the addon in local Kodi
   cli.js package     Package the addon into a zip                               [aliases: pack]
+  cli.js repository  Package addon and update it in your repository folder
   cli.js versioning  Get and set version for the addon
 
 Defaults
   --packagename, -n  Name of the package                                             [required]
 
 Build folders
-  --src, -s   The source files folder to build from.                        [default: "./src/"]
+  --src, -s   The source files folder to get files from.                    [default: "./src/"]
   --dist, -d  The folder for the build result or distributable files       [default: "./dist/"]
 
 Options:
@@ -24,6 +44,31 @@ Options:
 
 Important: All paths to directories should end with a trailing slash.  
 You can also use the bin command 'addon' through NPM instead of executing the cli.js file.
+
+## NPM Scripts
+To make it a bit easier, an example of scripts block for your own package.json:
+```json
+ "scripts": {
+    "build": "addon build",
+    "build-patch": "addon versioning --semver patch && build",
+    "build-minor": "addon versioning --semver minor && build",
+    "build-major": "addon versioning --semver major && build",
+    "build-pack": "build && addon package",
+    "build-pack-patch": "build-patch && addon package",
+    "build-pack-minor": "build-minor && addon package",
+    "build-pack-major": "build-major && addon package",
+    "build-publish": "build && addon repository",
+    "build-publish-patch": "build-patch && addon repository",
+    "build-publish-minor": "build-minor && addon repository",
+    "build-publish-major": "build-major && addon repository",
+    "build-install": "build && addon install",
+    "build-install-patch": "build-patch && addon install",
+    "build-install-minor": "build-minor && addon install",
+    "build-install-major": "build-major && addon install"
+  },
+```
+
+## Features
 
 ### Build
 ```bash
@@ -43,19 +88,26 @@ Options:
 Info about texture packer on [kodi wiki](https://kodi.wiki/view/TexturePacker) and source used in this script on [Github](https://github.com/nottinghamcollege/kodi-texturepacker/). 
 The supplied folders will be moved into a texture file (.xbt) with the same name as its parent directory. Note that the contents of the texturefolders will be removed afterwards, only leaving the xbt file behind. Texturefolders field must contain paths relative to the path provided in the dist option.
 
+### Checksum
+```bash
+addon checksum --sourcefile ./plugin.myplugin/myfile.zip
+```
+Generate checksum files (.md5) based on input file. Result will be that a new file will be created next to the file given as an argument, which will only contain the md5 checksum of the specified file. New filename will be similar but with an extra '.md5' added to the end.
+
 ### Package
 ```bash
-addon package --packagename plugin.myp
+addon package --packagename plugin.myplugin --zipfolder ./dist/zips/
 ```
-Will package all the files from the dist folder into a zip file, ready for deployment.
+Will package all the files from the dist folder into a zip file, ready for deployment. 
 
 Options:
 * packagename: Name of the package
 * dist: Destination folder for all distribution files
+* zipfolder: Location to store the created package
 
 ### Install
 ```bash
-addon install --packagename plugin.myp
+addon install --packagename plugin.myplugin
 ```
 Installs the addon into the local KODI instance (addons folder) and calls reload skin through KODI JSON-RPC.
 
@@ -66,6 +118,21 @@ Options:
 * port: Port
 * user: Username to access
 * password: Password to accces
+
+
+### Repository
+```bash
+addon repository --packagename plugin.myplugin
+```
+Package addon and update it in your repository folder, as well as updating the whole repository.  
+It will package the addon in a zip file (so package command is not needed anymore) and copy the file into the appropriate sub directory within your repository folder. It will update the local addon.xml for your addon and also the addons.xml in the root. It will create all needed checksum files and update the folders
+with directory listing pages in HTML for easy downloading.
+
+Options:
+* packagename: Name of the package
+* dist: Destination folder for all distribution files
+* zipfolder: Location to store the created package
+* repositoryfolder: Location of your kodi repository (root directory).
 
 ## Configuration files
 We support .rc config files by adding .addon file in the folder.
@@ -84,7 +151,8 @@ Example of config file:
     "texturepaths": [
         "plugin.myplugin/media/icons/"
     ],
-    "repositoryfolder": "./dist/",
+    "zipfolder": "./.dist/",
+    "repositoryfolder": "./repository.my/",
     "semver": "patch",
     "addonsfolder": "%AppData%\\Roaming\\Kodi\\addons\\",
     "host": "localhost",
@@ -92,22 +160,6 @@ Example of config file:
     "user": "kodi",
     "password": "kodi"
 }
-```
-
-## NPM Scripts
-Example of scripts block for your own package.json:
-```json
-    "scripts": {
-        "build-only": "addon build",
-        "build": "addon build && addon package",
-        "build-patch": "addon versioning --semver patch && build",
-        "build-minor": "addon versioning --semver minor && build",
-        "build-major": "addon versioning --semver major && build",
-        "build-install": "build && addon install",
-        "build-install-patch": "build-patch && addon install",
-        "build-install-minor": "build-minor && addon install",
-        "build-install-marjor": "build-major && addon install"
-    }
 ```
 
 ## Questions or issues
