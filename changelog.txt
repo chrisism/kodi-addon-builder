@@ -1,3 +1,6 @@
+v1.2.1
+- Fixed subfolder issue in packages
+
 v1.2.0
 - Added repository feature
 

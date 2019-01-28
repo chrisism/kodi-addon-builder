@@ -48,7 +48,7 @@ exports.zipPackage = (config) => {
         });
         
         archive.pipe(output);
-        archive.directory(config.dist + '/' + config.packagename, false);
+        archive.directory(config.dist + '/' + config.packagename, config.packagename);
         archive.finalize();
     });
 };
