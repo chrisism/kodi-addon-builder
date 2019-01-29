@@ -103,8 +103,6 @@ const getAddonXmlDocWithProvider = (config) => {
     var src = config.dist + config.packagename + path.sep + 'addon.xml';
     var addonFileXml = fs.readFileSync(src, 'utf8');
     var doc = new dom().parseFromString(addonFileXml)
-    var addonNode = doc.getElementsByTagName("addon")[0];
-    addonNode.setAttribute("provider-name", "chrisism");
 
     return doc;
 }
