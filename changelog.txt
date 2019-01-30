@@ -1,3 +1,7 @@
+v1.2.2
+- Provider-name not defaulted anymore
+- Better documentation and support for prerelease tags
+
 v1.2.1
 - Fixed subfolder issue in packages
 
@@ -12,4 +16,4 @@ v1.1.0
 - Made the globby patterns for src copy action editable.
 
 v1.0.0
-- First release.
+- First release

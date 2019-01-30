@@ -49,19 +49,22 @@ You can also use the bin command 'addon' through NPM instead of executing the cl
 To make it a bit easier, an example of scripts block for your own package.json:
 ```json
   "scripts": {
-    "build": "addon build",
+    "build-alpha": "addon versioning --semver prelease --tag alpha && npm run build",
     "build-patch": "addon versioning --semver patch && npm run build",
     "build-minor": "addon versioning --semver minor && npm run build",
     "build-major": "addon versioning --semver major && npm run build",
     "build-pack": "npm run build && addon package",
+    "build-pack-alpha": "npm run build-alpha && addon package",
     "build-pack-patch": "npm run build-patch && addon package",
     "build-pack-minor": "npm run build-minor && addon package",
     "build-pack-major": "npm run build-major && addon package",
     "build-publish": "npm run build && addon repository",
+    "build-publish-alpha": "npm run build-alpha && addon repository",
     "build-publish-patch": "npm run build-patch && addon repository",
     "build-publish-minor": "npm run build-minor && addon repository",
     "build-publish-major": "npm run build-major && addon repository",
     "build-install": "npm run build && addon install",
+    "build-install-alpha": "npm run build-alpha && addon install",
     "build-install-patch": "npm run build-patch && addon install",
     "build-install-minor": "npm run build-minor && addon install",
     "build-install-major": "npm run build-major && addon install"
@@ -70,19 +73,28 @@ To make it a bit easier, an example of scripts block for your own package.json:
 
 ## Features
 
+### Versioning
+```bash
+addon versioning --packagename plugin.myplugin --semver prerelease --tag alpha
+```
+With the versioning command you can easily update the version number of your addon and in the same time the version of your package.json. The package.json version number will be the version we start with and increment upon. When applying versioning will follow the (Semantic Versioning)[https://semver.org/] guidelines. 
+
+Options
+* ```semver```: The actual semver increment to apply. Choose from 'major', 'premajor', 'minor', 'preminor', 'patch', 'prepatch', 'prerelease' or nothing/empty. Major/minor/patch will increment the value of that specific part of the version number. Prepatch/minor/major will do the same but directly apply a prerelease to that version. Prerelease will increment the prerelease part after the dash of the version number e.g. ```1.0.0-2```. You can extend this by using the ```tag``` option.
+* ```tag```: This will be the extra identifier or tag applied when using prerelease increment. Think of terms like 'alpha' or 'beta'. Using semver 'prerelease' and tag 'alpha' will produce ```1.0.0-alpha.2```.
+
 ### Build
 ```bash
-addon build --packagename plugin.myplugin
+addon build --packagename plugin.myplugin --src .\src\ --srcpaths **\*.* !package.json --dist .\.dist\ 
 ```
-Will copy all needed files from the source directory to the dist folder. Afterwards will perform texturepacking actions
-for all configured folders.
+Will copy all needed files from the source directory to the dist folder. Afterwards will perform texturepacking actions for all configured folders.
 
 Options:
-* packagename: Name of the package
-* src: Source folder to copy files from
-* srcpaths: Paths/patterns to get files from source folder. [Globby](https://github.com/sindresorhus/globby#readme) patterns are applied.
-* dist: Destination folder for all distribution files
-* texturefolders: Paths to directories within dist folder to create texture files out of. 
+* ```packagename```: Name of the package.
+* ```src```: Source folder to copy files from.
+* ```srcpaths```: Paths/patterns to get files from source folder. [Globby](https://github.com/sindresorhus/globby#readme) patterns are applied.
+* ```dist```: Destination folder for all distribution files.
+* ```texturefolders```: Paths to directories within dist folder to create texture files out of. 
 
 #### TexturePacker
 Info about texture packer on [kodi wiki](https://kodi.wiki/view/TexturePacker) and source used in this script on [Github](https://github.com/nottinghamcollege/kodi-texturepacker/). 
@@ -94,6 +106,9 @@ addon checksum --sourcefile ./plugin.myplugin/myfile.zip
 ```
 Generate checksum files (.md5) based on input file. Result will be that a new file will be created next to the file given as an argument, which will only contain the md5 checksum of the specified file. New filename will be similar but with an extra '.md5' added to the end.
 
+Options:
+* ```sourcefile```: Path to the file to generate checksum file for.
+
 ### Package
 ```bash
 addon package --packagename plugin.myplugin --zipfolder ./dist/zips/
@@ -101,9 +116,9 @@ addon package --packagename plugin.myplugin --zipfolder ./dist/zips/
 Will package all the files from the dist folder into a zip file, ready for deployment. 
 
 Options:
-* packagename: Name of the package
-* dist: Destination folder for all distribution files
-* zipfolder: Location to store the created package
+* ```packagename```: Name of the package.
+* ```dist```: Destination folder for all distribution files.
+* ```zipfolder```: Location to store the created package.
 
 ### Install
 ```bash
@@ -112,12 +127,12 @@ addon install --packagename plugin.myplugin
 Installs the addon into the local KODI instance (addons folder) and calls reload skin through KODI JSON-RPC.
 
 Options:
-* packagename: Name of the package
-* dist: Destination folder for all distribution files
-* host: Hostname
-* port: Port
-* user: Username to access
-* password: Password to accces
+* ```packagename```: Name of the package
+* ```dist```: Destination folder for all distribution files
+* ```host```: Hostname
+* ```port```: Port
+* ```user```: Username to access
+* ```password```: Password to accces
 
 
 ### Repository
@@ -129,10 +144,10 @@ It will package the addon in a zip file (so package command is not needed anymor
 with directory listing pages in HTML for easy downloading.
 
 Options:
-* packagename: Name of the package
-* dist: Destination folder for all distribution files
-* zipfolder: Location to store the created package
-* repositoryfolder: Location of your kodi repository (root directory).
+* ```packagename```: Name of the package
+* ```dist```: Destination folder for all distribution files
+* ```zipfolder```: Location to store the created package
+* ```repositoryfolder```: Location of your kodi repository (root directory).
 
 ## Configuration files
 We support .rc config files by adding .addon file in the folder.
@@ -154,6 +169,7 @@ Example of config file:
     "zipfolder": "./.dist/",
     "repositoryfolder": "./repository.my/",
     "semver": "patch",
+    "tag": "alpha",
     "addonsfolder": "%AppData%\\Roaming\\Kodi\\addons\\",
     "host": "localhost",
     "port": "8080",

@@ -11,8 +11,13 @@ exports.builder = (yargs) => {
             alias: 'sv',
             default: '', 
             describe: 'Optional semver type to apply. Empty for no upgrade', 
-            group: 'Defaults', 
-            choices: ['major', 'minor', 'patch', 'prerelease', '']      
+            group: 'Versions', 
+            choices: ['major', 'premajor', 'minor', 'preminor', 'patch', 'prepatch', 'prerelease', '']
+        })
+        .option('tag', { 
+            default: '',
+            describe: 'When using prerelease this value will be applied as the prerelease tag',
+            group: 'Versions'
         })
         .demandOption('src');
 }
@@ -32,7 +37,7 @@ const setVersion = (config) => {
         
         // patch, minor, major, prepatch, preminor, premajor, prerelease
         if (config.semver !== '' && config.semver.length > 0) {
-            config.version = semver.inc(config.version, config.semver);    
+            config.version = semver.inc(config.version, config.semver, identifier = config.tag);    
         }
         
         if (config.verbose)
