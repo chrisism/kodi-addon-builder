@@ -49,6 +49,7 @@ You can also use the bin command 'addon' through NPM instead of executing the cl
 To make it a bit easier, an example of scripts block for your own package.json:
 ```json
   "scripts": {
+    "build": "addon build",
     "build-alpha": "addon versioning --semver prelease --tag alpha && npm run build",
     "build-patch": "addon versioning --semver patch && npm run build",
     "build-minor": "addon versioning --semver minor && npm run build",

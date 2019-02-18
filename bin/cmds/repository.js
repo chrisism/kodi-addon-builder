@@ -22,6 +22,7 @@ exports.handler = async function (argv) {
     }
     await packager.zipPackage(argv);  
     await copyPackageToRepository(argv);
+    await copyAssetsToRepository(argv);
     await copyAddonXmlToRepository(argv);
     await updateHtmlPageForAddonDirectory(argv);
     await updateAddonsXmlInRepository(argv);
@@ -41,6 +42,48 @@ const copyPackageToRepository = (config) => {
         return checksum.createChecksumFile(zipDest);
     });
 };
+
+const copyAssetsToRepository = (config) => {
+
+	return new Promise((resolve, reject) => {
+        var doc = getAddonXmlDocWithProvider(config);    
+        var iconNodes = doc.getElementsByTagName("icon")
+        var fanartNodes = doc.getElementsByTagName("fanart")
+
+        var dest =  config.repositoryfolder + config.packagename + path.sep;
+
+        if (config.verbose)
+            console.log('[REPOSITORY] Copying assets');
+        
+        if (iconNodes != null && iconNodes.length > 0) {
+            var node = iconNodes.item(0);
+            var relativePath = node.textContent;
+            
+            var destPath = dest + relativePath;
+            var orgPath = config.dist + config.packagename + path.sep + relativePath;
+
+            fs.ensureDirSync(path.dirname(destPath));
+            fs.copyFileSync(orgPath, destPath);
+            if (config.verbose)
+                console.log(`[REPOSITORY] Copied asset icon: ${orgPath} to ${destPath}`);
+        }
+        
+        if (fanartNodes != null && fanartNodes.length > 0) {
+            var node = fanartNodes.item(0);
+            var relativePath = node.textContent;
+            
+            var destPath = dest + relativePath;
+            var orgPath = config.dist + config.packagename + path.sep + relativePath;
+
+            fs.ensureDirSync(path.dirname(destPath));
+            fs.copyFileSync(orgPath, destPath);
+            if (config.verbose)
+                console.log(`[REPOSITORY] Copied asset icon: ${orgPath} to ${destPath}`);
+        }
+        
+        resolve();
+    });
+}
 
 const copyAddonXmlToRepository = (config) => {
 

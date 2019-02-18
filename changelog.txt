@@ -1,3 +1,6 @@
+v1.2.3
+- Added support for copying assets to repository folder
+
 v1.2.2
 - Provider-name not defaulted anymore
 - Better documentation and support for prerelease tags

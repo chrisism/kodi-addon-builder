@@ -1,6 +1,6 @@
 {
   "name": "kodi-addon-builder",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "Scripts to build and publish Kodi Python addons and skins",
   "scripts": {
     "build": "addon build && addon package",
