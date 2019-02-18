@@ -47,8 +47,9 @@ const copyAssetsToRepository = (config) => {
 
 	return new Promise((resolve, reject) => {
         var doc = getAddonXmlDocWithProvider(config);    
-        var iconNodes = doc.getElementsByTagName("icon")
-        var fanartNodes = doc.getElementsByTagName("fanart")
+        var iconNodes = doc.getElementsByTagName("icon");
+        var fanartNodes = doc.getElementsByTagName("fanart");
+        var screenshotNodes = doc.getElementsByTagName("screenshot");
 
         var dest =  config.repositoryfolder + config.packagename + path.sep;
 
@@ -78,9 +79,25 @@ const copyAssetsToRepository = (config) => {
             fs.ensureDirSync(path.dirname(destPath));
             fs.copyFileSync(orgPath, destPath);
             if (config.verbose)
-                console.log(`[REPOSITORY] Copied asset icon: ${orgPath} to ${destPath}`);
+                console.log(`[REPOSITORY] Copied asset fanart: ${orgPath} to ${destPath}`);
         }
         
+        if (screenshotNodes != null && screenshotNodes.length > 0) {
+            
+            for (var i = 0; i<screenshotNodes.length; i++) {
+                var node = screenshotNodes.item(i);
+                var relativePath = node.textContent;
+                
+                var destPath = dest + relativePath;
+                var orgPath = config.dist + config.packagename + path.sep + relativePath;
+
+                fs.ensureDirSync(path.dirname(destPath));
+                fs.copyFileSync(orgPath, destPath);
+                if (config.verbose)
+                    console.log(`[REPOSITORY] Copied asset screenshot: ${orgPath} to ${destPath}`);
+            }
+        }
+
         resolve();
     });
 }
