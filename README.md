@@ -99,7 +99,7 @@ Options:
 
 #### TexturePacker
 Info about texture packer on [kodi wiki](https://kodi.wiki/view/TexturePacker) and source used in this script on [Github](https://github.com/nottinghamcollege/kodi-texturepacker/). 
-The supplied folders will be moved into a texture file (.xbt) with the same name as its parent directory. Note that the contents of the texturefolders will be removed afterwards, only leaving the xbt file behind. Texturefolders field must contain paths relative to the path provided in the dist option.
+The contents of the supplied folders will be moved into a texture file (.xbt) with the given name. Note that the contents of the texturefolders will be removed afterwards, only leaving the xbt file behind. Texturefolders field must contain paths relative to the path provided in the dist option.
 
 ### Checksum
 ```bash
@@ -165,7 +165,10 @@ Example of config file:
     ],
     "dist": "./dist/",
     "texturepaths": [
-        "plugin.myplugin/media/icons/"
+        {
+          "name": "icons",
+          "path": "plugin.myplugin/media/icons/"
+        }
     ],
     "zipfolder": "./.dist/",
     "repositoryfolder": "./repository.my/",

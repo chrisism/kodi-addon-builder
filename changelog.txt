@@ -1,3 +1,6 @@
+v1.3.0
+- Rebuild the texturepacking using different json input
+
 v1.2.3
 - Added support for copying assets to repository folder
 

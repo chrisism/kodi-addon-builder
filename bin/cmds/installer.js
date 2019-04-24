@@ -7,6 +7,7 @@ exports.desc = 'Install the addon in local Kodi';
 exports.builder = (yargs) => {
     yargs
         .option('addonsfolder', { alias: 'a', default: '%appdata%\\Roaming\\Kodi\\addons', describe: 'The KODI folder with the addons' })
+        .option('ignorefail', { alias: 'i', default: false, describe: 'Ignore copy failures and continue'})
         .option('host', { alias: 'h', default: 'localhost', describe: 'Hostname', group: 'KODI JSON-RPC' })
         .option('port', { alias: 'p', default: '8080', describe: 'Port', group: 'KODI JSON-RPC'  })
         .option('user', { alias: 'u', default: 'kodi', describe: 'Username to access', group: 'KODI JSON-RPC'  })
@@ -30,7 +31,9 @@ const cleanupAddonFolderInKodi = (config) => {
     if (config.verbose) 
         console.log('[INSTALL] Cleaning up KODI folder: ' + kodiFolder);
 
-    return fs.remove(kodiFolder);
+    return fs.remove(kodiFolder).catch(err => {
+        console.log(err);
+    });
 };
 
 
@@ -62,7 +65,14 @@ const copyDistFolderToKodi = (config) => {
             if (config.verbose)
                 console.log('[INSTALL] Copying '+ srcPath + ' to ' + destPath);
 
-            fs.copySync(srcPath, destPath);
+            try {
+                fs.copySync(srcPath, destPath);
+            } catch(err) {
+                console.log(`Error while copying ${srcPath} Error: ${err}`);
+                if (!config.ignorefail) {
+                    throw err;
+                }
+            }
         }
         resolve();
     });

@@ -76,10 +76,11 @@ const packageTextures = (config) => {
         }
 
         for (var i in config.texturepaths) {
-            var texturePath = config.dist + config.texturepaths[i];
+            
+            var packageName = config.texturepaths[i].name  + '.xbt';
+            var texturePath = config.dist + config.texturepaths[i].path;
 
             var pathSegments =  texturePath.split(/\\|\//).filter(p => p);
-            var packageName = pathSegments.pop()  + '.xbt';
             var outputFile = pathSegments.concat(packageName).join(path.sep);
             
             if (config.verbose)
@@ -100,9 +101,13 @@ const packageTextures = (config) => {
             shell.exec(cmd, {silent: !config.verbose});
 
             if (config.verbose)
-                console.log('[BUILD] Removing original texturepath: ' + texturePath);
+                console.log('[BUILD] Removing original files from texturepath: ' + texturePath);
 
-            fs.remove(texturePath)
+            const pathsToRemove = globby.sync(['*.*', '!*.xbt'], { cwd: texturePath, gitignore: true });
+            for(var i in pathsToRemove) {
+                var pathToRemove = texturePath + pathsToRemove[i];
+                fs.remove(pathToRemove);
+            }
         }
 
         resolve();
